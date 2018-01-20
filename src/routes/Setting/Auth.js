@@ -71,6 +71,11 @@ export default class extends PureComponent {
           actionAuthCheckedKeys: keys.checked,
         });
         break;
+      case 'column':
+        setState({
+          columnAuthCheckedKeys: keys.checked,
+        });
+        break;
       case 'info':
         setState({
           infoAuthCheckedKeys: keys.checked,
@@ -80,7 +85,7 @@ export default class extends PureComponent {
   }
 
   save = () => {
-    const {model, [modelNameSpace]: {app: {current}, viewAuthCheckedKeys, actionAuthCheckedKeys}} = this.props;
+    const {model, [modelNameSpace]: {app: {current}, viewAuthCheckedKeys, actionAuthCheckedKeys, columnAuthCheckedKeys}} = this.props;
     const RoleID = Convert.ToInt(Uri.Query('roleID'));
     Modal.confirm({
       title: '保存数据?',
@@ -91,6 +96,7 @@ export default class extends PureComponent {
           AppID: current,
           RoleViewAuthList: viewAuthCheckedKeys,
           RoleActionAuthList: actionAuthCheckedKeys,
+          RoleColumnAuthList: columnAuthCheckedKeys,
         }).then(success => {
           if (success) {
             model.get({
@@ -127,6 +133,26 @@ export default class extends PureComponent {
     );
   }
 
+  createColumnTree(dataObj) {
+    const data = cloneDeep(dataObj);
+    if (data.children) {
+      return (
+        <TreeNode key={`menu-${data.menuID}`} title={data.menuTitle} disableCheckbox>
+          {data.children.map(child => {
+            return this.createColumnTree(child);
+          })}
+        </TreeNode>
+      );
+    }
+    return (
+      <TreeNode key={`menu-${data.menuID}`} title={data.menuTitle} disableCheckbox>
+        {data.menuColumn.map(column => {
+          return <TreeNode key={column.columnID} title={column.name} isleaf={true}/>
+        })}
+      </TreeNode>
+    );
+  }
+
   renderAppTabs() {
     const {[modelNameSpace]: {app: {list, current}}} = this.props;
     return (
@@ -146,6 +172,9 @@ export default class extends PureComponent {
         </TabPane>
         <TabPane tab='模块操作授权' key='action'>
           <div className="dashed-container">{this.renderActionAuth()}</div>
+        </TabPane>
+        <TabPane tab='模块字段授权' key='column'>
+          <div className="dashed-container">{this.renderColumnAuth()}</div>
         </TabPane>
         <TabPane tab='模块信息授权' key='info'/>
       </Tabs>
@@ -174,15 +203,33 @@ export default class extends PureComponent {
     const {[modelNameSpace]: {app: {list, current}, menuActionList, actionAuthCheckedKeys}} = this.props;
     return (
       <Tree
+        className="ant-tree-hide-disabled"
         checkable
         showLine={true}
         checkStrictly
         checkedKeys={actionAuthCheckedKeys}
-        defaultExpandAll={true}
         onCheck={keys => this.changeKeys('action', keys)}
       >
         {menuActionList.map(menu => {
           return this.createActionTree(menu);
+        })}
+      </Tree>
+    )
+  }
+
+  renderColumnAuth() {
+    const {[modelNameSpace]: {app: {list, current}, menuColumnList, columnAuthCheckedKeys}} = this.props;
+    return (
+      <Tree
+        className="ant-tree-hide-disabled"
+        checkable
+        showLine={true}
+        checkStrictly
+        checkedKeys={columnAuthCheckedKeys}
+        onCheck={keys => this.changeKeys('column', keys)}
+      >
+        {menuColumnList.map(menu => {
+          return this.createColumnTree(menu);
         })}
       </Tree>
     )

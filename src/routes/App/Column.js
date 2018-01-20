@@ -14,7 +14,7 @@ import {IQueryable} from '../../utils/rs/Linq';
 import {ViewCard, EditModal} from '../../myComponents/Fx/';
 import {TableActionBar, TableContainer, StandardTable} from '../../myComponents/Table/';
 
-const modelNameSpace = 'app_menu_action';
+const modelNameSpace = 'app_menu_column';
 
 @connect(state => ({
   [modelNameSpace]: state[modelNameSpace],
@@ -25,7 +25,7 @@ export default class extends PureComponent {
   state = {
     columns: [
       {
-        title: 'Action标题',
+        title: 'Column标题',
         dataIndex: 'name',
         key: 'name',
         width: 200,
@@ -37,7 +37,7 @@ export default class extends PureComponent {
         }
       },
       {
-        title: 'Action权限码',
+        title: 'Column权限码',
         dataIndex: 'code',
         key: 'code',
       },
@@ -74,7 +74,7 @@ export default class extends PureComponent {
               label: '删除',
               pop: {},
               submit: () => {
-                this.remove(record.actionID);
+                this.remove(record.columnID);
               },
             }
           ];
@@ -140,10 +140,10 @@ export default class extends PureComponent {
     values.status = values.status ? 1 : 0;
     values.hideInMenu = values.hideInMenu ? 1 : 0;
     const {isAdd, content} = this.state.modal;
-    const actionID = isAdd ? 0 : content.actionID;
+    const columnID = isAdd ? 0 : content.columnID;
     model.save(isAdd, {
-      AppMenuAction: {
-        actionID,
+      AppMenuColumn: {
+        columnID,
         menuID,
         appID,
         ...values,
@@ -156,13 +156,13 @@ export default class extends PureComponent {
     });
   }
 
-  remove = (actionID) => {
+  remove = (columnID) => {
     const {model} = this.props;
-    const actionIDList = [];
-    if (actionID) {
-      actionIDList.push(actionID);
+    const columnIDList = [];
+    if (columnID) {
+      columnIDList.push(columnID);
     }
-    model.delete({actionIDList}).then(success => {
+    model.delete({columnIDList}).then(success => {
       if (success) {
         this.getList();
       }
@@ -189,25 +189,25 @@ export default class extends PureComponent {
     const item = [
       {
         key: 'name',
-        label: 'Action名称',
+        label: 'Column名称',
         value: isAdd ? "" : content.name,
         config: {
           rules: [{
-            required: true, message: '请输入Action名称',
+            required: true, message: '请输入Column名称',
           }],
         },
-        render: () => <Input placeholder="请输入Action名称"/>,
+        render: () => <Input placeholder="请输入Column名称"/>,
       },
       {
         key: 'code',
-        label: 'Action代码',
+        label: 'Column代码',
         value: isAdd ? "" : content.code,
         config: {
           rules: [{
-            required: true, message: '请输入Action代码',
+            required: true, message: '请输入Column代码',
           }],
         },
-        render: () => <Input placeholder="请输入Action代码"/>,
+        render: () => <Input placeholder="请输入Column代码"/>,
       },
       {
         key: 'showIndex',
@@ -244,7 +244,7 @@ export default class extends PureComponent {
     const {columns} = this.state;
     return (
       <StandardTable
-        rowKey={record => record.actionID}
+        rowKey={record => record.columnID}
         columns={columns}
         loading={loading.effects[`${modelNameSpace}/get`]}
         dataSource={list}
@@ -269,7 +269,7 @@ export default class extends PureComponent {
     return (
       <PageHeaderLayout >
         <ViewCard
-          title="App模块操作列表"
+          title="App模块字段列表"
           bordered={false}
           onBack={() => {
             this.toList();

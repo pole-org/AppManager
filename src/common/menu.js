@@ -18,6 +18,11 @@ const menuData = [
         path: 'list/menu/action',
         hideInMenu: true,
       },
+      {
+        name: 'APP模块字段',
+        path: 'list/menu/column',
+        hideInMenu: true,
+      },
     ],
   },
   {
@@ -26,16 +31,16 @@ const menuData = [
     path: 'setting',
     children: [
       {
+        name: '公司管理',
+        path: 'company',
+      },
+      {
         name: '部门管理',
         path: 'department',
       },
       {
         name: '职位管理',
         path: 'position',
-      },
-      {
-        name: '职级管理',
-        path: 'position-level',
       },
       {
         name: '用户管理',

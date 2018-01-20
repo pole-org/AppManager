@@ -16,23 +16,27 @@ export default createModel({
     },
     menuList: [],
     menuActionList: [],
+    menuColumnList: [],
     viewAuthCheckedKeys: [],
     actionAuthCheckedKeys: [],
     infoAuthCheckedKeys: [],
+    columnAuthCheckedKeys: [],
   },
   effects: {
     *get({payload}, {call, put}){
       const res = yield call(get, payload);
       if (res.data) {
         const data = res.data.toObject();
-        const {menuList, menuActionList, roleMenuList, roleMenuActionList} = data;
+        const {menuList, menuActionList, menuColumnList, roleMenuList, roleMenuActionList, roleMenuColumnList} = data;
         yield put({
           type: 'setStateOk',
           payload: {
             menuList: createNav(menuList),
             menuActionList: createNav(menuActionList),
+            menuColumnList: createNav(menuColumnList),
             viewAuthCheckedKeys: roleMenuList,
             actionAuthCheckedKeys: roleMenuActionList,
+            columnAuthCheckedKeys: roleMenuColumnList,
           },
         });
       }

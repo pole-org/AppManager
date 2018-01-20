@@ -9,3 +9,5 @@ export async function get(params) {
 export async function setUserPosition(params) {
   return Http.AutoError.Post(`${prefix}/Position/Set`, params);
 }
+
+

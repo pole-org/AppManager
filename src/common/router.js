@@ -45,6 +45,12 @@ export const getRouterData = (app) => {
     '/app/list/menu/action': {
       component: dynamicWrapper(app, ['app_menu_action'], () => import('../routes/App/Action')),
     },
+    '/app/list/menu/column': {
+      component: dynamicWrapper(app, ['app_menu_column'], () => import('../routes/App/Column')),
+    },
+    '/setting/company': {
+      component: dynamicWrapper(app, ['company'], () => import('../routes/Setting/Company')),
+    },
     '/setting/department': {
       component: dynamicWrapper(app, ['department'], () => import('../routes/Setting/Department')),
     },

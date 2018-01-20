@@ -12,6 +12,7 @@ import {
 } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import {Component, Config} from '../../utils/rs/';
+import {String} from '../../utils/rs/Util';
 import {SearchForm} from  '../../myComponents/Form/';
 import {TableActionBar, TableContainer, StandardTable} from  '../../myComponents/Table/';
 import {ViewCard, EditModal, AutoSelect, AutoTreeSelect} from '../../myComponents/Fx/';
@@ -33,7 +34,7 @@ export default class extends PureComponent {
         dataIndex: 'headImg',
         key: 'headImg',
         render: (text, record, index) => {
-          var imgUrl = text.IsEmpty() ? Config.defaultAvator : `${Config.imgServer}${text}`;
+          const imgUrl = String.IsNullOrEmpty(text) ? Config.defaultAvator : `${Config.imgServer}${text}`;
           return <Avatar size="small" src={imgUrl}/>;
         }
       },
@@ -460,8 +461,13 @@ export default class extends PureComponent {
           onClick={() => this.toggleModal({visible: true, isAdd: true, content: null, title: '添加职位等级'})}
         >添加
         </Button>,
-        <Button icon="delete" type='danger' onClick={e => this.deletePositionLevel()}
-                disabled={selectItems.length === 0}>删除</Button>
+        <Button
+          icon="delete"
+          type='danger'
+          onClick={e => this.deletePositionLevel()}
+          disabled={selectItems.length === 0}>
+          删除
+        </Button>,
       ]
     }
     return (

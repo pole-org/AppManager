@@ -88,7 +88,15 @@ export default class extends PureComponent {
                 const {model} = this.props;
                 model.push(`/app/list/menu/action?appID=${Uri.Query('appID')}&menuID=${record.menuID}`);
               }
-            }
+            },
+            {
+              label: '字段管理',
+              hide: record.parentID === 0,
+              submit: () => {
+                const {model} = this.props;
+                model.push(`/app/list/menu/column?appID=${Uri.Query('appID')}&menuID=${record.menuID}`);
+              }
+            },
           ];
           const more = [
             {
